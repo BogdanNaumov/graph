@@ -2,11 +2,15 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QVector>
+#include <QMap>
 #include <QStringList>
+#include "qcustomplot.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
+namespace Ui
+{
+    class MainWindow;
 }
 QT_END_NAMESPACE
 
@@ -19,17 +23,17 @@ public:
     ~MainWindow();
 
 private slots:
-    // Слот для обработки открытия файла
     void openFile();
-
-    // Слот для отображения/скрытия переменной на графике
     void toggleVariableOnGraph(const QString &variable, bool visible);
 
 private:
-    // Функция для обновления списка переменных (чекбоксов)
     void updateVariables(const QStringList &variables);
+    void redrawGraph();
 
     Ui::MainWindow *ui;
+    QCustomPlot *customPlot;
+    QVector<double> timeData;
+    QMap<QString, QVector<double>> variablesData;
 };
 
 #endif // MAINWINDOW_H
