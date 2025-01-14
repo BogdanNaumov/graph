@@ -33,6 +33,7 @@ private:
     Ui::MainWindow *ui;
     QCustomPlot *customPlot;
     QVector<double> timeData;
+    //int flag;
     QMap<QString, QVector<double>> variablesData;
 };
 
