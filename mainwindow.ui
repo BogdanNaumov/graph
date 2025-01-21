@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>1000</width>
     <height>600</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <widget class="QWidget" name="plotArea" native="true">
       <property name="minimumSize">
        <size>
-        <width>600</width>
+        <width>700</width>
         <height>0</height>
        </size>
       </property>
@@ -31,7 +31,38 @@
        <bool>true</bool>
       </property>
       <widget class="QWidget" name="scrollAreaWidgetContents">
-       <layout class="QVBoxLayout" name="variablesLayout"/>
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>200</width>
+         <height>537</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="variablesLayout">
+        <item>
+         <widget class="QTableWidget" name="variablesTable">
+          <property name="columnCount">
+           <number>1</number>
+          </property>
+          <property name="rowCount">
+           <number>0</number>
+          </property>
+          <property name="horizontalHeaderVisible">
+           <bool>false</bool>
+          </property>
+          <property name="verticalHeaderVisible">
+           <bool>false</bool>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="showGrid">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -42,7 +73,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1000</width>
      <height>22</height>
     </rect>
    </property>

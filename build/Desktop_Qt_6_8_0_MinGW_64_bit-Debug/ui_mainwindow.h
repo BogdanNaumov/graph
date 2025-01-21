@@ -13,11 +13,13 @@
 #include <QtGui/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -33,6 +35,7 @@ public:
     QScrollArea *variablesScrollArea;
     QWidget *scrollAreaWidgetContents;
     QVBoxLayout *variablesLayout;
+    QTableWidget *variablesTable;
     QMenuBar *menubar;
     QMenu *menuFile;
     QStatusBar *statusbar;
@@ -41,7 +44,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(800, 600);
+        MainWindow->resize(1000, 600);
         actionOpenFile = new QAction(MainWindow);
         actionOpenFile->setObjectName("actionOpenFile");
         centralwidget = new QWidget(MainWindow);
@@ -50,7 +53,7 @@ public:
         mainLayout->setObjectName("mainLayout");
         plotArea = new QWidget(centralwidget);
         plotArea->setObjectName("plotArea");
-        plotArea->setMinimumSize(QSize(600, 0));
+        plotArea->setMinimumSize(QSize(700, 0));
 
         mainLayout->addWidget(plotArea);
 
@@ -59,8 +62,21 @@ public:
         variablesScrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName("scrollAreaWidgetContents");
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 200, 537));
         variablesLayout = new QVBoxLayout(scrollAreaWidgetContents);
         variablesLayout->setObjectName("variablesLayout");
+        variablesTable = new QTableWidget(scrollAreaWidgetContents);
+        variablesTable->setObjectName("variablesTable");
+        variablesTable->setColumnCount(1);
+        variablesTable->setRowCount(0);
+        variablesTable->horizontalHeader()->setVisible(false);
+        variablesTable->verticalHeader()->setVisible(false);
+
+        variablesTable->setAlternatingRowColors(true);
+        variablesTable->setShowGrid(false);
+
+        variablesLayout->addWidget(variablesTable);
+
         variablesScrollArea->setWidget(scrollAreaWidgetContents);
 
         mainLayout->addWidget(variablesScrollArea);
@@ -68,7 +84,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 800, 22));
+        menubar->setGeometry(QRect(0, 0, 1000, 22));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName("menuFile");
         MainWindow->setMenuBar(menubar);
