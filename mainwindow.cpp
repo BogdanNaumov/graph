@@ -53,30 +53,34 @@ void MainWindow::openFile()
     {
         QString headerLine = in.readLine();
         variableNames = headerLine.split('\t', Qt::SkipEmptyParts);
-        if (!variableNames.isEmpty() && variableNames.first() == "time")
+
+        // Удаляем переменную "dt" из отображаемых переменных
+        if (!variableNames.isEmpty() && variableNames.last() == "dt")
         {
-            variableNames.removeFirst();
+            variableNames.removeLast();
         }
     }
 
     int parsedLines = 0;
-    double currentTime = 0.0; 
+    double currentTime = 0.0;
     while (!in.atEnd() && parsedLines < lineCount)
     {
         QString line = in.readLine();
         QStringList values = line.split('\t', Qt::SkipEmptyParts);
-        if (values.size() < variableNames.size() + 1)
+        if (values.size() < variableNames.size() + 1) // +1 для dt
             continue;
 
-        
-        timeData.append(currentTime);  
+        // Добавляем текущее значение времени
+        timeData.append(currentTime);
 
-       
-        currentTime += 0.0025;
+        // Обновляем время на основе последнего столбца (dt)
+        double dt = values.last().toDouble();
+        currentTime += dt;
 
+        // Сохраняем значения всех переменных, кроме "dt"
         for (int i = 0; i < variableNames.size(); ++i)
         {
-            variablesData[variableNames[i]].append(values[i + 1].toDouble());
+            variablesData[variableNames[i]].append(values[i].toDouble());
         }
         parsedLines++;
     }
@@ -91,10 +95,8 @@ void MainWindow::openFile()
     redrawGraph();
 }
 
-
 void MainWindow::updateVariables(const QStringList &variables)
 {
-
     QLayout *layout = ui->variablesLayout;
     QLayoutItem *item;
     while ((item = layout->takeAt(0)) != nullptr)
@@ -117,14 +119,31 @@ void MainWindow::toggleVariableOnGraph(const QString &variable, bool visible)
 {
     if (visible)
     {
-
         QCPGraph *graph = customPlot->addGraph();
+
+        // Устанавливаем данные графика
         graph->setData(timeData, variablesData[variable]);
         graph->setName(variable);
+
+        // Назначаем уникальный цвет графику
+        static int colorIndex = 0; // Индекс для выбора цвета
+        const QList<QColor> colors = {
+            QColor(Qt::red), QColor(Qt::green), QColor(Qt::blue), QColor(Qt::cyan),
+            QColor(Qt::magenta), QColor(Qt::yellow), QColor(Qt::gray)
+        };
+
+        // Циклически выбираем цвет из списка
+        QColor color = colors[colorIndex % colors.size()];
+        colorIndex++;
+
+        // Применяем цвет к графику
+        QPen pen(color);
+        pen.setWidth(2); // Толщина линии
+        graph->setPen(pen);
     }
     else
     {
-
+        // Удаляем график с заданным именем
         for (int i = 0; i < customPlot->graphCount(); ++i)
         {
             if (customPlot->graph(i)->name() == variable)
@@ -137,6 +156,7 @@ void MainWindow::toggleVariableOnGraph(const QString &variable, bool visible)
 
     redrawGraph();
 }
+
 
 void MainWindow::redrawGraph()
 {
