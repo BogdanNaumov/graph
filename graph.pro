@@ -9,11 +9,13 @@ CONFIG += c++17
 
 INCLUDEPATH += C:/Qt/Qcustompilot
 SOURCES += \
+    fileparser.cpp \
     main.cpp \
     mainwindow.cpp \
     C:/Qt/Qcustompilot/qcustomplot.cpp
 
 HEADERS += \
+    fileparser.h \
     mainwindow.h \
     C:/Qt/Qcustompilot/qcustomplot.h
 

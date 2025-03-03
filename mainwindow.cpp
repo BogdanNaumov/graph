@@ -1,8 +1,7 @@
 #include "mainwindow.h"
-#include "./ui_mainwindow.h"
+#include "fileparser.h"
+#include "ui_mainwindow.h"
 #include <QFileDialog>
-#include <QFile>
-#include <QTextStream>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QCheckBox>
@@ -14,16 +13,20 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    fileParser = new FileParser(this);
+
     customPlot = new QCustomPlot(this);
     ui->plotArea->setLayout(new QVBoxLayout);
     ui->plotArea->layout()->addWidget(customPlot);
 
     connect(ui->actionOpenFile, &QAction::triggered, this, &MainWindow::openFile);
+    connect(fileParser, &FileParser::fileParsed, this, &MainWindow::onFileParsed);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete fileParser;
 }
 
 void MainWindow::openFile()
@@ -37,57 +40,14 @@ void MainWindow::openFile()
     if (!ok)
         return;
 
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QMessageBox::critical(this, tr("Ошибка"), tr("Не удалось открыть файл"));
-        return;
-    }
+    fileParser->parseFile(filePath, lineCount);
+}
 
-    QTextStream in(&file);
-    QStringList variableNames;
-    QVector<double> timeData;
-    QMap<QString, QVector<double>> variablesData;
-
-    if (!in.atEnd())
-    {
-        QString headerLine = in.readLine();
-        variableNames = headerLine.split('\t', Qt::SkipEmptyParts);
-
-        if (!variableNames.isEmpty() && variableNames.last() == "dt")
-        {
-            variableNames.removeLast();
-        }
-    }
-
-    int parsedLines = 0;
-    double currentTime = 0.0;
-    while (!in.atEnd() && parsedLines < lineCount)
-    {
-        QString line = in.readLine();
-        QStringList values = line.split('\t', Qt::SkipEmptyParts);
-        if (values.size() < variableNames.size() + 1)
-            continue;
-
-        timeData.append(currentTime);
-
-        double dt = values.last().toDouble();
-        currentTime += dt;
-
-        for (int i = 0; i < variableNames.size(); ++i)
-        {
-            variablesData[variableNames[i]].append(values[i].toDouble());
-        }
-        parsedLines++;
-    }
-
-    file.close();
-
-    updateVariables(variableNames);
-
-    this->timeData = timeData;
-    this->variablesData = variablesData;
-
+void MainWindow::onFileParsed()
+{
+    updateVariables(fileParser->getVariableNames());
+    timeData = fileParser->getTimeData();
+    variablesData = fileParser->getVariablesData();
     redrawGraph();
 }
 
@@ -116,7 +76,6 @@ void MainWindow::toggleVariableOnGraph(const QString &variable, bool visible)
     if (visible)
     {
         QCPGraph *graph = customPlot->addGraph();
-
         graph->setData(timeData, variablesData[variable]);
         graph->setName(variable);
 
@@ -147,7 +106,6 @@ void MainWindow::toggleVariableOnGraph(const QString &variable, bool visible)
 
     redrawGraph();
 }
-
 
 void MainWindow::redrawGraph()
 {
