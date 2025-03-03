@@ -1,0 +1,35 @@
+# Файлы сборки
+*.o
+*.obj
+*.so
+*.a
+*.lib
+*.dll
+*.dylib
+*.exe
+*.app
+Makefile
+Makefile.Debug
+Makefile.Release
+
+# Автоматически сгенерированные файлы Qt
+moc_*.cpp
+moc_*.h
+ui_*.h
+qrc_*.cpp
+
+# Каталог сборки (если используешь out-of-source build)
+build*/
+debug/
+release/
+
+# Настройки среды разработки
+*.pro.user
+*.pro.user.*
+*.qmake.stash
+
+# Логи и временные файлы
+*.log
+*.swp
+*.bak
+.DS_Store
