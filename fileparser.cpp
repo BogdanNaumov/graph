@@ -52,7 +52,7 @@ bool FileParser::parseFile(const QString &filePath, int lineCount)
 
     file.close();
 
-    emit fileParsed(); // Уведомляем, что файл загружен
+    emit fileParsed();
     return true;
 }
 

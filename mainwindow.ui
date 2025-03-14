@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1319</width>
-    <height>600</height>
+    <height>611</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,28 +26,58 @@
      </widget>
     </item>
     <item>
-     <widget class="QScrollArea" name="variablesScrollArea">
-      <property name="minimumSize">
-       <size>
-        <width>250</width>
-        <height>550</height>
-       </size>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>250</width>
-         <height>550</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="variablesLayout"/>
-      </widget>
-     </widget>
+     <layout class="QVBoxLayout" name="rightSideLayout">
+      <item>
+       <widget class="QScrollArea" name="variablesScrollArea">
+        <property name="minimumSize">
+         <size>
+          <width>250</width>
+          <height>300</height>
+         </size>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>593</width>
+           <height>548</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="scrollLayout">
+          <item>
+           <layout class="QVBoxLayout" name="variablesLayout"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTabWidget" name="statsTabWidget">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>275</height>
+         </size>
+        </property>
+        <widget class="QWidget" name="tabExpectation">
+         <property name="title">
+          <string>Мат. ожидание</string>
+         </property>
+         <layout class="QVBoxLayout" name="expectationLayout"/>
+        </widget>
+        <widget class="QWidget" name="tabVariance">
+         <property name="title">
+          <string>Дисперсия</string>
+         </property>
+         <layout class="QVBoxLayout" name="varianceLayout"/>
+        </widget>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

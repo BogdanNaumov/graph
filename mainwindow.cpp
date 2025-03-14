@@ -31,6 +31,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::openFile()
 {
+    customPlot->clearGraphs();
+    customPlot->replot();
     QString filePath = QFileDialog::getOpenFileName(this, tr("Открыть файл"), "", tr("TAB Files (*.tab);;All Files (*)"));
     if (filePath.isEmpty())
         return;
@@ -81,8 +83,16 @@ void MainWindow::toggleVariableOnGraph(const QString &variable, bool visible)
 
         static int colorIndex = 0;
         const QList<QColor> colors = {
-            QColor(Qt::red), QColor(Qt::green), QColor(Qt::blue), QColor(Qt::cyan),
-            QColor(Qt::magenta), QColor(Qt::yellow), QColor(Qt::gray)
+            QColor(65, 105, 225),   // Royal Blue
+            QColor(220, 20, 60),    // Crimson
+            QColor(34, 139, 34),    // Forest Green
+            QColor(255, 140, 0),    // Dark Orange
+            QColor(147, 112, 219),  // Medium Purple
+            QColor(0, 139, 139),    // Dark Cyan
+            QColor(255, 99, 71),    // Tomato
+            QColor(75, 0, 130),     // Indigo
+            QColor(0, 128, 128),    // Teal
+            QColor(218, 112, 214)   // Orchid
         };
 
         QColor color = colors[colorIndex % colors.size()];
